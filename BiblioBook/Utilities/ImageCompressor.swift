@@ -47,4 +47,4 @@ nonisolated enum ImageCompressor {
             image.draw(in: CGRect(origin: .zero, size: newSize))
         }
     }
-}
+}//struct
