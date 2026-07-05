@@ -22,8 +22,9 @@ struct BookListView: View {
         ScrollViewReader { proxy in
             List(selection: $selection) {
                 ForEach(filteredBooks) { book in
-                    BookRowView(book: book)
-                        .tag(book)
+                    NavigationLink(value: book) {
+                        BookRowView(book: book)
+                    }
                 }
                 .onDelete(perform: deleteBooks)
             }
