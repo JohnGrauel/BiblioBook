@@ -9,6 +9,15 @@ struct BookDetailView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Bindable var book: Book
 
+    /// Wraps the temporary `.bibliobook` file URL so it can drive a sheet.
+    private struct ShareItem: Identifiable {
+        let id = UUID()
+        let url: URL
+    }
+
+    @State private var shareItem: ShareItem? = nil
+    @State private var shareError: String? = nil
+
     var body: some View {
         Form {
             Section {
@@ -73,6 +82,21 @@ struct BookDetailView: View {
         }
         .navigationTitle(book.title.isEmpty ? "Book Details" : book.title)
         .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button("Share Book", systemImage: "square.and.arrow.up") {
+                    shareBook()
+                }
+            }
+        }
+        .sheet(item: $shareItem) { item in
+            ShareSheet(items: [item.url])
+        }
+        .alert("Could Not Share Book", isPresented: shareErrorBinding, presenting: shareError) { _ in
+            Button("OK", role: .cancel) { }
+        } message: { message in
+            Text(message)
+        }
         .onDisappear {
             saveEdits()
         }
@@ -80,6 +104,25 @@ struct BookDetailView: View {
             if newPhase == .background {
                 saveEdits()
             }
+        }
+    }
+
+    private var shareErrorBinding: Binding<Bool> {
+        Binding(
+            get: { shareError != nil },
+            set: { if !$0 { shareError = nil } }
+        )
+    }
+
+    /// Flushes pending edits, writes a `.bibliobook` file, and presents the
+    /// share sheet so the book can be sent by email (or any other service).
+    private func shareBook() {
+        saveEdits()
+        do {
+            let url = try BookSharing.exportFile(for: book)
+            shareItem = ShareItem(url: url)
+        } catch {
+            shareError = error.localizedDescription
         }
     }
 
