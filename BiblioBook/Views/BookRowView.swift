@@ -19,7 +19,7 @@ struct BookRowView: View {
                         .lineLimit(1)
                 }
                 if !book.lentTo.isEmpty {
-                    Label("Lent to \(book.lentTo)", systemImage: "person.crop.circle.badge.clock")
+                    Label(lentDescription, systemImage: "person.crop.circle.badge.clock")
                         .font(.caption)
                         .foregroundStyle(.orange)
                 }
@@ -27,6 +27,14 @@ struct BookRowView: View {
         }
         // Keep row content clear of the trailing index bar.
         .padding(.trailing, 14)
+    }
+
+    /// "Lent to Sam on Jul 13, 2026" when a date is recorded, otherwise "Lent to Sam".
+    private var lentDescription: String {
+        if let dateLent = book.dateLent {
+            return "Lent to \(book.lentTo) on \(dateLent.formatted(date: .abbreviated, time: .omitted))"
+        }
+        return "Lent to \(book.lentTo)"
     }
 
     @ViewBuilder

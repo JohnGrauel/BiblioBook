@@ -46,9 +46,11 @@ BiblioBook/
 │   ├── UtilitiesView.swift    # Sample data generator (1–20 books)
 │   ├── ImportExportView.swift # fileExporter / fileImporter + dedup logic
 │   ├── JSONDocument.swift     # Tiny FileDocument wrapping Data
+│   ├── ShareSheet.swift       # UIActivityViewController wrapper (share by email)
 │   └── HelpView.swift         # In-app user guide
 └── Utilities/
-    └── ImageCompressor.swift  # ≤200 KB JPEG pipeline, @concurrent
+    ├── ImageCompressor.swift  # ≤200 KB JPEG pipeline, @concurrent
+    └── BookSharing.swift      # .bibliobook UTType + one-book export/import
 ```
 
 Navigation rule of thumb: anything that *shows* books starts in `BookListView`; anything that *changes what a Book is* lives in `Models/`.
@@ -86,6 +88,10 @@ Navigation rule of thumb: anything that *shows* books starts in `BookListView`; 
 **🎠 The photo carousel (borrowed with pride).** The detail view's four photos moved from four stacked form rows into a paging carousel at the top of the form — a pattern lifted straight from the sibling BooksRUs app. The modern SwiftUI recipe needs no `TabView(.page)` hacks: `ScrollView(.horizontal)` + `containerRelativeFrame(.horizontal)` on each page (each photo claims exactly one screen-width), `.scrollTargetLayout()` + `.scrollTargetBehavior(.viewAligned)` (snap to pages), and `.scrollPosition(id:)` (a plain `@State Int?` that both *reports* the visible page and *drives* it — tap an indicator dot, set the ID, the scroll view animates over). A `.scrollTransition` shrinking/fading non-current pages sells the carousel feel for free. One bug dodged from the original: BooksRUs iterated `0..<4` and indexed rotations positionally, which desyncs the dots when a middle photo slot is empty — BiblioBook instead builds an `occupiedSlots: [Int]` array and uses the *slot number* as the scroll ID, so photo 3 alone still gets exactly one accurate dot. The rotate button writes to the same stored `imageRotationN` the edit slots use, so the two UIs can't disagree.
 
 **✂️ The 200 KB diet.** Compression strategy: try JPEG qualities from 0.85 down to 0.4; if still too big, scale the image to 70% and repeat (up to 10 rounds). Quality-first beats resize-first because JPEG quality is cheap fidelity to spend, while resolution loss is forever. A 48 MP camera shot lands under 200 KB in a few iterations.
+
+**📨 Share one book, tap to shelve it.** New feature: send a single book to another BiblioBook user by email; they tap the attachment and it lands in their library. The whole thing rides on machinery the app already had — `Book: Encodable` for the outbound JSON, `BookImportRecord` + `bookChecksum()` dedup for the inbound side. `BookSharing.exportFile(for:)` writes one book (not the export's *array*) to a temp `.bibliobook` file; the detail view's Share button hands that URL to a `UIActivityViewController` (wrapped as `ShareSheet`) so Mail attaches it. On the receiving end, `ContentView.onOpenURL` decodes the file, skips it if the checksum already exists, otherwise inserts and selects it. The importer even tolerates an array-shaped file (takes the first record) so a full export can be "shared" too.
+
+**🧨 The synchronized-group landmine.** The one real fight was the Info.plist. To make a tapped attachment *launch BiblioBook*, the app must **own** a document type — which means `CFBundleDocumentTypes` + `UTExportedTypeDeclarations` for a custom `com.catalpa.bibliobook.book` UTI (extension `.bibliobook`, conforming to `public.json`). The project has no Info.plist file (it's `GENERATE_INFOPLIST_FILE = YES`), so I created one. First build: **"Multiple commands produce … Info.plist."** Cause: this project uses Xcode's *file-system-synchronized groups* — every file physically inside the `BiblioBook/` source folder is auto-added to the target, so my new plist got compiled *as a bundle resource*, colliding with the generated one. Fix: move `Info.plist` **out** of the synchronized folder, up to the project root next to the `.xcodeproj`, where nothing auto-adopts it. Then it's referenced only when `INFOPLIST_FILE` points at it. Lesson: in a synchronized-group project, config files that must *not* be a build input belong outside the synced folder. And with `GENERATE_INFOPLIST_FILE = YES`, a partial Info.plist is fine — Xcode merges the generated keys (camera usage, etc.) on top of your file, so you only list what the generator can't express (nested dict arrays like document types).
 
 ## 6. Engineer's Wisdom
 

@@ -29,9 +29,11 @@ BiblioBook is an iOS/iPadOS SwiftUI app that maintains a personal database of bo
 - **SDK 27 `@State` macro:** never assign a `@State` property inside an `init` — give it its initial value at the declaration only. Assigning in `init` is either a compile error or silently ignored.
 - **`@Model` already generates `Sendable`** on SDK 27 — do not also declare `@unchecked Sendable` on `Book` (redundant-conformance warning).
 - **Do not edit `project.pbxproj` directly** (crashes Xcode while open). Build-setting changes must be made in the Xcode UI.
-- Two settings must exist in target build settings for full functionality:
+- Settings that must exist in target build settings for full functionality:
   - `INFOPLIST_KEY_NSCameraUsageDescription` — required before the camera button is used on a device.
   - `ENABLE_USER_SELECTED_FILES = readwrite` — the template default `readonly` can block `fileExporter` from writing the user-selected file.
+  - `INFOPLIST_FILE = Info.plist` — points at the root-level `Info.plist` that registers the `.bibliobook` document type (see below). `GENERATE_INFOPLIST_FILE` stays `YES`; Xcode merges the generated keys on top of the file.
+- **Book sharing / `.bibliobook` files:** a single book exports to a `.bibliobook` file (custom UTI `com.catalpa.bibliobook.book`, conforms to `public.json`) via `Utilities/BookSharing.swift`; the detail-view Share button sends it through `ShareSheet` (a `UIActivityViewController` wrapper). Tapping such a file opens the app and `ContentView.onOpenURL` imports it (checksum-deduped). Registration lives in `/Info.plist` (`CFBundleDocumentTypes` + `UTExportedTypeDeclarations`). That plist **must stay at the project root, NOT inside the synchronized `BiblioBook/` source folder** — this project uses file-system-synchronized groups, so a plist inside the folder is auto-compiled as a bundle resource and the build fails with "Multiple commands produce Info.plist."
 - The A–Z index bar overlays the list's trailing edge; `BookRowView` adds trailing padding so content clears it.
 
 ## Build / Run
