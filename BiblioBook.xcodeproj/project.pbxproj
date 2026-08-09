@@ -16,6 +16,21 @@
 			path = BiblioBook;
 			sourceTree = "<group>";
 		};
+		D5492D6E30293CE000582B73 /* Models */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Models;
+			sourceTree = "<group>";
+		};
+		D5492D7430293CE400582B73 /* Utilities */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		D5492D8730293CE700582B73 /* Views */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Views;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -30,6 +45,9 @@
 		000000000000000000000001 = {
 			isa = PBXGroup;
 			children = (
+				D5492D6E30293CE000582B73 /* Models */,
+				D5492D7430293CE400582B73 /* Utilities */,
+				D5492D8730293CE700582B73 /* Views */,
 				000000000000000000000010 /* BiblioBook */,
 				000000000000000000000020 /* Products */,
 			);
@@ -58,6 +76,9 @@
 			);
 			fileSystemSynchronizedGroups = (
 				000000000000000000000010 /* BiblioBook */,
+				D5492D6E30293CE000582B73 /* Models */,
+				D5492D7430293CE400582B73 /* Utilities */,
+				D5492D8730293CE700582B73 /* Views */,
 			);
 			name = BiblioBook;
 			productName = MyApp;
