@@ -26,9 +26,24 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		D5492D8730293CE700582B73 /* Views */ = {
+		D5492D8730293CE700582B73 /* Helper Files */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Views;
+			path = "Helper Files";
+			sourceTree = "<group>";
+		};
+		D5492D9830293DB100582B73 /* Book Views */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Book Views";
+			sourceTree = "<group>";
+		};
+		D5492D9930293DBF00582B73 /* ImportExport */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = ImportExport;
+			sourceTree = "<group>";
+		};
+		D5492D9A30293E0C00582B73 /* Help */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Help;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -45,9 +60,12 @@
 		000000000000000000000001 = {
 			isa = PBXGroup;
 			children = (
+				D5492D9A30293E0C00582B73 /* Help */,
+				D5492D9930293DBF00582B73 /* ImportExport */,
 				D5492D6E30293CE000582B73 /* Models */,
+				D5492D8730293CE700582B73 /* Helper Files */,
 				D5492D7430293CE400582B73 /* Utilities */,
-				D5492D8730293CE700582B73 /* Views */,
+				D5492D9830293DB100582B73 /* Book Views */,
 				000000000000000000000010 /* BiblioBook */,
 				000000000000000000000020 /* Products */,
 			);
@@ -78,7 +96,10 @@
 				000000000000000000000010 /* BiblioBook */,
 				D5492D6E30293CE000582B73 /* Models */,
 				D5492D7430293CE400582B73 /* Utilities */,
-				D5492D8730293CE700582B73 /* Views */,
+				D5492D8730293CE700582B73 /* Helper Files */,
+				D5492D9830293DB100582B73 /* Book Views */,
+				D5492D9930293DBF00582B73 /* ImportExport */,
+				D5492D9A30293E0C00582B73 /* Help */,
 			);
 			name = BiblioBook;
 			productName = MyApp;
