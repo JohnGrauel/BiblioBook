@@ -79,14 +79,19 @@ struct BookPhotoSlot: View {
                     Text(title)
                     Spacer()
                     PhotosPicker(selection: $pickerItem, matching: .images) {
-                        Label("Library", systemImage: "photo.on.rectangle")
+                        Label("Library", systemImage: "photo.stack")
                     }
+                    .labelStyle(.iconOnly)
+                    .imageScale(.large)
                     .buttonStyle(.borderless)
                     if UIImagePickerController.isSourceTypeAvailable(.camera) {
                         Button("Camera", systemImage: "camera") {
                             isShowingCamera = true
                         }
+                        .labelStyle(.iconOnly)
+                        .imageScale(.large)
                         .buttonStyle(.borderless)
+                        .padding(.leading, 12)
                     }
                 }
             }
