@@ -22,3 +22,10 @@ struct StarRatingView: View {
         .accessibilityValue("\(rating) of 5 stars")
     }
 }
+
+#Preview {
+    @Previewable @State var rating = 3
+
+    StarRatingView(rating: $rating)
+        .padding()
+}

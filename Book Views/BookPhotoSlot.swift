@@ -111,3 +111,32 @@ struct BookPhotoSlot: View {
         }
     }
 }
+
+/// Renders a flat-color placeholder photo so the preview has image data to show.
+private func previewPhotoData(_ color: UIColor) -> Data? {
+    let size = CGSize(width: 300, height: 400)
+    return UIGraphicsImageRenderer(size: size).image { context in
+        color.setFill()
+        context.fill(CGRect(origin: .zero, size: size))
+    }.pngData()
+}
+
+#Preview {
+    @Previewable @State var emptyData: Data? = nil
+    @Previewable @State var fullData: Data? = previewPhotoData(.systemTeal)
+    @Previewable @State var fullRotation = 0.0
+    @Previewable @State var compactData: Data? = previewPhotoData(.systemIndigo)
+    @Previewable @State var compactRotation = 90.0
+
+    Form {
+        Section("Empty") {
+            BookPhotoSlot(title: "Photo 1", imageData: $emptyData)
+        }
+        Section("Full") {
+            BookPhotoSlot(title: "Photo 2", imageData: $fullData, rotation: $fullRotation)
+        }
+        Section("Compact") {
+            BookPhotoSlot(title: "Photo 3", imageData: $compactData, rotation: $compactRotation, style: .compact)
+        }
+    }
+}

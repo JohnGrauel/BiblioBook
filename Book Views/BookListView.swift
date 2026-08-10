@@ -125,3 +125,17 @@ struct BookListView: View {
         }
     }
 }
+
+#Preview {
+    let container = try! ModelContainer(
+        for: Book.self,
+        configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+    )
+    for book in SampleBookFactory.makeBooks(count: 8) {
+        container.mainContext.insert(book)
+    }
+    return NavigationStack {
+        BookListView(selection: .constant(nil))
+    }
+    .modelContainer(container)
+}

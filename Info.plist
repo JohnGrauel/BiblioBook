@@ -20,14 +20,14 @@
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>
-			<key>UTTypeIdentifier</key>
-			<string>com.catalpa.bibliobook.book</string>
-			<key>UTTypeDescription</key>
-			<string>BiblioBook Book</string>
 			<key>UTTypeConformsTo</key>
 			<array>
 				<string>public.json</string>
 			</array>
+			<key>UTTypeDescription</key>
+			<string>BiblioBook Book</string>
+			<key>UTTypeIdentifier</key>
+			<string>com.catalpa.bibliobook.book</string>
 			<key>UTTypeTagSpecification</key>
 			<dict>
 				<key>public.filename-extension</key>

@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 /// A single row in the book list: cover thumbnail, title, author,
 /// and a lending indicator when the book is out on loan.
@@ -52,4 +53,21 @@ struct BookRowView: View {
                 .frame(width: 34, height: 48)
         }
     }
+}
+
+#Preview {
+    let container = try! ModelContainer(
+        for: Book.self,
+        configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+    )
+    let books = SampleBookFactory.makeBooks(count: 3)
+    books[1].lentTo = "Sam"
+    books[1].dateLent = .now
+    for book in books {
+        container.mainContext.insert(book)
+    }
+    return List(books) { book in
+        BookRowView(book: book)
+    }
+    .modelContainer(container)
 }

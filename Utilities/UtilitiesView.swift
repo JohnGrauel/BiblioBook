@@ -54,3 +54,15 @@ struct UtilitiesView: View {
         resultMessage = "Added \(newBooks.count) sample book\(newBooks.count == 1 ? "" : "s")."
     }
 }
+
+#Preview {
+    let container = try! ModelContainer(
+        for: Book.self,
+        configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+    )
+    for book in SampleBookFactory.makeBooks(count: 3) {
+        container.mainContext.insert(book)
+    }
+    return UtilitiesView()
+        .modelContainer(container)
+}

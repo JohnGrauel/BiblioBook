@@ -32,3 +32,13 @@ struct OptionalDateRow: View {
         )
     }
 }
+
+#Preview {
+    @Previewable @State var lentDate: Date? = .now
+    @Previewable @State var returnedDate: Date? = nil
+
+    Form {
+        OptionalDateRow(title: "Date Lent", date: $lentDate)
+        OptionalDateRow(title: "Date Returned", date: $returnedDate)
+    }
+}

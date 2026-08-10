@@ -17,3 +17,7 @@ struct ShareSheet: UIViewControllerRepresentable {
 
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
+
+#Preview {
+    ShareSheet(items: [URL(fileURLWithPath: "/tmp/Sample Book.bibliobook")])
+}

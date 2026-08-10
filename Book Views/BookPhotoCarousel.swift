@@ -1,4 +1,5 @@
 import SwiftUI
+import SwiftData
 
 /// A horizontally paging carousel for the four book photos, shown at the
 /// top of the detail view. Each photo fills one page; the indicator dots
@@ -131,4 +132,33 @@ struct BookPhotoCarousel: View {
             break
         }
     }
+}
+
+/// Renders a flat-color placeholder photo so the preview has image data to show.
+private func previewPhotoData(_ color: UIColor) -> Data? {
+    let size = CGSize(width: 300, height: 400)
+    return UIGraphicsImageRenderer(size: size).image { context in
+        color.setFill()
+        context.fill(CGRect(origin: .zero, size: size))
+    }.pngData()
+}
+
+#Preview {
+    let container = try! ModelContainer(
+        for: Book.self,
+        configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+    )
+    let book = SampleBookFactory.makeBooks(count: 1)[0]
+    book.image1Data = previewPhotoData(.systemTeal)
+    book.image2Data = previewPhotoData(.systemIndigo)
+    book.image3Data = previewPhotoData(.systemOrange)
+    container.mainContext.insert(book)
+    return Form {
+        Section {
+            BookPhotoCarousel(book: book)
+        }
+        .listRowBackground(Color.clear)
+        .listRowInsets(EdgeInsets())
+    }
+    .modelContainer(container)
 }

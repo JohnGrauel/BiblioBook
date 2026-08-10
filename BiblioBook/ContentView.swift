@@ -73,6 +73,13 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
-        .modelContainer(for: Book.self, inMemory: true)
+    let container = try! ModelContainer(
+        for: Book.self,
+        configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+    )
+    for book in SampleBookFactory.makeBooks(count: 2) {
+        container.mainContext.insert(book)
+    }
+    return ContentView()
+        .modelContainer(container)
 }

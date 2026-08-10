@@ -41,3 +41,10 @@ struct TitleIndexBar: View {
         .glassEffect(.regular, in: .capsule)
     }
 }
+
+#Preview {
+    TitleIndexBar(activeKeys: ["#", "A", "C", "H", "M", "T", "W"]) { key in
+        print("Selected \(key)")
+    }
+    .padding()
+}

@@ -97,3 +97,7 @@ struct HelpTopicView: View {
         .padding(.vertical, 2)
     }
 }
+
+#Preview {
+    HelpView()
+}

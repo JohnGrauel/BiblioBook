@@ -162,3 +162,11 @@ struct BookAddView: View {
         dismiss()
     }
 }
+
+#Preview {
+    BookAddView()
+        .modelContainer(try! ModelContainer(
+            for: Book.self,
+            configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+        ))
+}

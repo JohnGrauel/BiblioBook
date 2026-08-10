@@ -154,3 +154,15 @@ struct ImportExportView: View {
         }
     }
 }
+
+#Preview {
+    let container = try! ModelContainer(
+        for: Book.self,
+        configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+    )
+    for book in SampleBookFactory.makeBooks(count: 5) {
+        container.mainContext.insert(book)
+    }
+    return ImportExportView()
+        .modelContainer(container)
+}
